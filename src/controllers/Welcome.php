@@ -27,9 +27,21 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
+		$this->data = NULL;
 		//$this->load->view('welcome_message');
-		$this->data['records'] = User_Model::all();
-		//$this->load->view('test', $this->data);
-		print_r(json_encode($this->data));
+		//$this->data['records'] = User_Model::all();
+		$this->load->view('test', $this->data);
+		//$this->load->view('dashboard_template', $this->data);
+		//print_r(json_encode($this->data));
+	}
+
+	public function login()
+	{
+		$this->data = NULL;
+		//$this->load->view('welcome_message');
+		//$this->data['records'] = User_Model::all();
+		$this->load->view('login_test', $this->data);
+		//$this->load->view('dashboard_template', $this->data);
+		//print_r(json_encode($this->data));
 	}
 }

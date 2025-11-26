@@ -17,13 +17,13 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema newapp-library-1
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `newapp-library-1` ;
-USE `newapp-library-1` ;
+CREATE SCHEMA IF NOT EXISTS `newapp-library` ;
+USE `newapp-library` ;
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_clients_ies`
+-- Table `newapp-library`.`t_clients_ies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_clients_ies` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_clients_ies` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ies_nombre` VARCHAR(255) NOT NULL,
   `ies_codmod` VARCHAR(255) NULL DEFAULT NULL,
@@ -46,15 +46,14 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_clients_ies` (
   UNIQUE INDEX `t_careers_career_title_unique` (`ies_nombre` ASC) VISIBLE,
   UNIQUE INDEX `t_careers_career_code_unique` (`ies_codmod` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_people`
+-- Table `newapp-library`.`t_people`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_people` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_people` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL DEFAULT NULL,
   `first_surname` VARCHAR(255) NULL DEFAULT NULL,
@@ -75,25 +74,24 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_people` (
   `province` VARCHAR(45) NULL DEFAULT NULL,
   `district` VARCHAR(45) NULL DEFAULT NULL,
   `nationality` CHAR(4) NULL DEFAULT NULL,
-  `t_clients_ies_id` INT(10) UNSIGNED NOT NULL,
+  `t_clients_ies_id` INT(10) UNSIGNED NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `t_mobile_unique` (`mobile` ASC) VISIBLE,
   INDEX `fk_t_people_t_clients_ies_idx` (`t_clients_ies_id` ASC) VISIBLE,
   CONSTRAINT `fk_t_people_t_clients_ies1`
     FOREIGN KEY (`t_clients_ies_id`)
-    REFERENCES `newapp-library-1`.`t_clients_ies` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `newapp-library`.`t_clients_ies` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_careers`
+-- Table `newapp-library`.`t_careers`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_careers` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_careers` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `career_title` VARCHAR(255) NOT NULL,
   `career_code` VARCHAR(255) NULL DEFAULT NULL,
@@ -106,15 +104,14 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_careers` (
   UNIQUE INDEX `t_careers_career_title_unique` (`career_title` ASC) VISIBLE,
   UNIQUE INDEX `t_careers_career_code_unique` (`career_code` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_catalogs`
+-- Table `newapp-library`.`t_catalogs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_catalogs` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_catalogs` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `catalog_name` VARCHAR(255) NOT NULL,
   `catalog_alias` VARCHAR(255) NULL DEFAULT NULL,
@@ -129,27 +126,25 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_catalogs` (
   UNIQUE INDEX `u_name` (`catalog_name` ASC) VISIBLE,
   UNIQUE INDEX `u_display` (`catalog_display` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_document_type`
+-- Table `newapp-library`.`t_document_type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_document_type` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_document_type` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `document_type_label` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_ebooks`
+-- Table `newapp-library`.`t_ebooks`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_ebooks` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_ebooks` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ebook_code` VARCHAR(255) NOT NULL,
   `ebook_isbn` VARCHAR(255) NULL DEFAULT NULL,
@@ -170,25 +165,24 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_ebooks` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `deleted_at` TIMESTAMP NULL DEFAULT NULL,
   `status` TINYINT(1) NULL DEFAULT 1,
-  `t_catalogs_id` BIGINT(20) UNSIGNED NOT NULL,
+  `t_catalogs_id` BIGINT(20) UNSIGNED NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `u_code` (`ebook_code` ASC) VISIBLE,
   UNIQUE INDEX `u_display` (`ebook_display` ASC) VISIBLE,
   INDEX `fk_t_ebooks_t_catalogs1_idx` (`t_catalogs_id` ASC) VISIBLE,
   CONSTRAINT `fk_t_ebooks_t_catalogs1`
     FOREIGN KEY (`t_catalogs_id`)
-    REFERENCES `newapp-library-1`.`t_catalogs` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `newapp-library`.`t_catalogs` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 38
 DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_users`
+-- Table `newapp-library`.`t_users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_users` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_users` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `avatar` VARCHAR(255) NULL DEFAULT 'media/avatars/blank.png',
   `status` TINYINT(3) UNSIGNED NOT NULL DEFAULT 1,
@@ -207,26 +201,25 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_users` (
   `salt_decode` VARCHAR(45) NULL DEFAULT NULL,
   `display_name` VARCHAR(45) NULL,
   `user_type` ENUM('User', 'Admin', 'Sysadmin', 'Guest') NULL DEFAULT 'Guest',
-  `t_people_id` BIGINT(20) UNSIGNED NOT NULL,
+  `t_people_id` BIGINT(20) UNSIGNED NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `t_users_username_unique` (`username` ASC) VISIBLE,
   UNIQUE INDEX `t_users_email_unique` (`email` ASC) VISIBLE,
   INDEX `fk_t_users_t_people1_idx` (`t_people_id` ASC) VISIBLE,
   CONSTRAINT `fk_t_users_t_people1`
     FOREIGN KEY (`t_people_id`)
-    REFERENCES `newapp-library-1`.`t_people` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `newapp-library`.`t_people` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 192
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_ebooks_views`
+-- Table `newapp-library`.`t_ebooks_views`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_ebooks_views` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_ebooks_views` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ebook_id` BIGINT(20) UNSIGNED NOT NULL,
   `user_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -240,19 +233,18 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_ebooks_views` (
   INDEX `user_id` (`user_id` ASC) VISIBLE,
   CONSTRAINT `t_ebooks_views_ibfk_1`
     FOREIGN KEY (`ebook_id`)
-    REFERENCES `newapp-library-1`.`t_ebooks` (`id`),
+    REFERENCES `newapp-library`.`t_ebooks` (`id`),
   CONSTRAINT `t_ebooks_views_ibfk_2`
     FOREIGN KEY (`user_id`)
-    REFERENCES `newapp-library-1`.`t_users` (`id`))
+    REFERENCES `newapp-library`.`t_users` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_favorites`
+-- Table `newapp-library`.`t_favorites`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_favorites` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_favorites` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ebook_id` BIGINT(20) UNSIGNED NOT NULL,
   `user_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -267,18 +259,18 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_favorites` (
   INDEX `user_id` (`user_id` ASC) VISIBLE,
   CONSTRAINT `t_favorites_ibfk_1`
     FOREIGN KEY (`ebook_id`)
-    REFERENCES `newapp-library-1`.`t_ebooks` (`id`),
+    REFERENCES `newapp-library`.`t_ebooks` (`id`),
   CONSTRAINT `t_favorites_ibfk_2`
     FOREIGN KEY (`user_id`)
-    REFERENCES `newapp-library-1`.`t_users` (`id`))
+    REFERENCES `newapp-library`.`t_users` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_roles`
+-- Table `newapp-library`.`t_roles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_roles` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_roles` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `rolename` VARCHAR(255) NOT NULL,
   `slug` VARCHAR(255) NULL DEFAULT NULL,
@@ -290,15 +282,14 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_roles` (
   `guard_name` VARCHAR(50) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_sessions`
+-- Table `newapp-library`.`t_sessions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_sessions` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_sessions` (
   `id` VARCHAR(255) NOT NULL,
   `user_id` BIGINT(20) UNSIGNED NULL DEFAULT NULL,
   `ip_address` VARCHAR(45) NULL DEFAULT NULL,
@@ -316,9 +307,9 @@ COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_settings`
+-- Table `newapp-library`.`t_settings`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_settings` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_settings` (
   `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `client_ruc_uid` VARCHAR(25) NOT NULL,
   `client_alias` VARCHAR(255) NULL DEFAULT NULL,
@@ -336,25 +327,24 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_settings` (
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `deleted_at` TIMESTAMP NULL DEFAULT NULL,
-  `t_clients_ies_id` INT(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`, `t_clients_ies_id`),
+  `t_clients_ies_id` INT(10) UNSIGNED NULL,
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `u_ruc_uid` (`client_ruc_uid` ASC) VISIBLE,
   UNIQUE INDEX `u_display` (`client_display` ASC) VISIBLE,
   INDEX `fk_t_settings_t_clients_ies1_idx` (`t_clients_ies_id` ASC) VISIBLE,
   CONSTRAINT `fk_t_settings_t_clients_ies1`
     FOREIGN KEY (`t_clients_ies_id`)
-    REFERENCES `newapp-library-1`.`t_clients_ies` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `newapp-library`.`t_clients_ies` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_users_has_t_roles`
+-- Table `newapp-library`.`t_users_has_t_roles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_users_has_t_roles` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_users_has_t_roles` (
   `t_users_id` BIGINT(20) UNSIGNED NOT NULL,
   `t_roles_id` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`t_users_id`, `t_roles_id`),
@@ -362,12 +352,12 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_users_has_t_roles` (
   INDEX `fk_t_users_has_t_roles_t_users1_idx` (`t_users_id` ASC) VISIBLE,
   CONSTRAINT `fk_t_users_has_t_roles_t_users1`
     FOREIGN KEY (`t_users_id`)
-    REFERENCES `newapp-library-1`.`t_users` (`id`)
+    REFERENCES `newapp-library`.`t_users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_t_users_has_t_roles_t_roles1`
     FOREIGN KEY (`t_roles_id`)
-    REFERENCES `newapp-library-1`.`t_roles` (`id`)
+    REFERENCES `newapp-library`.`t_roles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -376,9 +366,9 @@ COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `newapp-library-1`.`t_careers_has_t_clients_ies`
+-- Table `newapp-library`.`t_careers_has_t_clients_ies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_careers_has_t_clients_ies` (
+CREATE TABLE IF NOT EXISTS `newapp-library`.`t_careers_has_t_clients_ies` (
   `t_careers_id` INT(10) UNSIGNED NOT NULL,
   `t_clients_ies_id` INT(10) UNSIGNED NOT NULL,
   `t_catalogs_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -388,17 +378,17 @@ CREATE TABLE IF NOT EXISTS `newapp-library-1`.`t_careers_has_t_clients_ies` (
   INDEX `fk_t_careers_has_t_clients_ies_t_catalogs1_idx` (`t_catalogs_id` ASC) VISIBLE,
   CONSTRAINT `fk_t_careers_has_t_clients_ies_t_careers1`
     FOREIGN KEY (`t_careers_id`)
-    REFERENCES `newapp-library-1`.`t_careers` (`id`)
+    REFERENCES `newapp-library`.`t_careers` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_t_careers_has_t_clients_ies_t_clients_ies1`
     FOREIGN KEY (`t_clients_ies_id`)
-    REFERENCES `newapp-library-1`.`t_clients_ies` (`id`)
+    REFERENCES `newapp-library`.`t_clients_ies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_t_careers_has_t_clients_ies_t_catalogs1`
     FOREIGN KEY (`t_catalogs_id`)
-    REFERENCES `newapp-library-1`.`t_catalogs` (`id`)
+    REFERENCES `newapp-library`.`t_catalogs` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

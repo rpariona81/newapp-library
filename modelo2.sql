@@ -336,20 +336,3 @@ CREATE TABLE `t22_clients_has_ebooks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /* data for Table t22_clients_has_ebooks */
-
-/* create command for menuhoy */
-
-DELIMITER $$
-CREATE ALGORITHM=UNDEFINED DEFINER=`ronaldpa`@`localhost` SQL SECURITY DEFINER VIEW `menuhoy` AS select `t_pedidos`.`id` AS `id`,`t_pedidos`.`plato_id` AS `plato_id`,`t_pedidos`.`plato` AS `plato`,`t_pedidos`.`entrada` AS `entrada`,`t_pedidos`.`cliente` AS `cliente`,`t_pedidos`.`proyecto` AS `proyecto`,`t_pedidos`.`correo` AS `correo`,`t_pedidos`.`precio` AS `precio`,`t_pedidos`.`cantidad` AS `cantidad`,`t_pedidos`.`estado` AS `estado`,`t_pedidos`.`despacho` AS `despacho`,`t_pedidos`.`pago` AS `pago`,`t_pedidos`.`mensaje` AS `mensaje`,`t_pedidos`.`created_at` AS `created_at`,`t_pedidos`.`updated_at` AS `updated_at` from `t_pedidos` where `t_pedidos`.`estado` > 0$$
-
-DELIMITER ;
-
-/* create command for v_sessions */
-
-DELIMITER $$
-CREATE ALGORITHM=UNDEFINED DEFINER=`ronaldpa`@`localhost` SQL SECURITY DEFINER VIEW `v_sessions` AS select `t1`.`last_activity` AS `last_activity`,from_unixtime(`t1`.`last_activity`) AS `last_activity_datetime`,date_format(from_unixtime(`t1`.`last_activity`),'%Y-%m-%d') AS `last_activity_date`,date_format(from_unixtime(`t1`.`last_activity`),'%Y-%m-%d %H:%i:%s') + interval -5 hour AS `session_datetime_local`,date_format(date_format(from_unixtime(`t1`.`last_activity`),'%Y-%m-%d %H:%i:%s') + interval -5 hour,'%Y-%m-%d') AS `session_date_local`,`t1`.`ip_address` AS `ip_address`,`t2`.`id` AS `user_id`,`t2`.`username` AS `username`,`t2`.`email` AS `email`,`t3`.`role_id` AS `role_id`,`t4`.`rolename` AS `rolename` from (((`t_sessions` `t1` left join `t_users` `t2` on(`t1`.`user_id` = `t2`.`id`)) left join `t_role_user` `t3` on(`t2`.`id` = `t3`.`user_id`)) left join `t_roles` `t4` on(`t3`.`role_id` = `t4`.`id`))$$
-
-DELIMITER ;
-
-/* Restore session variables to original values */
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

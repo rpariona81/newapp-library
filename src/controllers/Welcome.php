@@ -22,6 +22,7 @@ class Welcome extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('User_model');
+		$this->load->model('Role_model');
 		$data = array();
 	}
 
@@ -30,6 +31,7 @@ class Welcome extends CI_Controller {
 		$this->data = NULL;
 		//$this->load->view('welcome_message');
 		//$this->data['records'] = User_Model::all();
+		$this->data['records'] = Role_Model::all();
 		$this->load->view('test', $this->data);
 		//$this->load->view('dashboard_template', $this->data);
 		//print_r(json_encode($this->data));

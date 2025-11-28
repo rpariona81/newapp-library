@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 
 class User_Model extends MY_Model
 {
-	protected $table = 't_users';
+	protected $table = 't16_users';
 
 	protected $fillable = [
 		'username',
